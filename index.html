@@ -130,7 +130,7 @@
 .footer{height:24px;min-height:24px;border:0;background:transparent}
 @media(max-width:1100px){.playerSkip .skipBtn{min-width:64px;padding:0 7px;font-size:12px}.playerSkip{gap:4px}.channelInfo{grid-template-columns:34px minmax(70px,1fr) 32px auto;gap:5px}}
 @media(max-width:800px){.playerSkip{position:static;transform:none;margin:0 auto;order:3}.playerControls{flex-wrap:wrap}.channelInfo{display:grid;grid-template-columns:36px minmax(0,1fr) 32px auto}.channelStatus{margin:0}.footer{height:auto;min-height:24px}}
-.aboutActions{display:flex;justify-content:center;margin-top:16px}.aboutCard a{color:#8beaff;text-decoration:none}.aboutCard a:hover{text-decoration:underline}\n
+.aboutActions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:18px}.aboutActionBtn{flex:1 1 145px;min-height:42px;padding:9px 12px;border:1px solid #235785;border-radius:10px;background:#0b2a48;color:#eaf7ff;font-weight:800}.aboutActionBtn:hover{background:#0a4776;border-color:#42d7f5}.aboutSettingGroup{padding:11px 12px;margin:8px 0;border:1px solid #173b5e;border-radius:10px;background:#041324}.aboutSettingGroup strong{display:block;color:#83dfff;font-size:13px;margin-bottom:5px}.aboutSettingValue{font-size:14px;line-height:1.65;overflow-wrap:anywhere;white-space:pre-wrap}.aboutCard a{color:#8beaff;text-decoration:none}.aboutCard a:hover{text-decoration:underline}\n
 /* Verified follow-up fixes from latest screenshot */
 .ch{min-height:70px!important;padding:9px 7px!important;margin-bottom:6px!important;gap:8px!important;grid-template-columns:22px 43px minmax(0,1fr) 23px!important}
 .ch img{width:43px!important;height:36px!important}
@@ -220,35 +220,38 @@ async function playChannel(c){
 function openShop(){const l=adminLinks.find(x=>/shop/i.test(String(val(x,['key','name','type','label','title','platform','device']))))||adminLinks.find(x=>val(x,['shop_url','shop','shopLink']));const href=val(l,['url','link','value','target_url','shop_url','shop','shopLink','pc_url']);if(href)window.open(href,'_blank','noopener');else toast('অনলাইন শপের লিংক অ্যাডমিন প্যানেল থেকে সেট করা নেই')}
 $('shopLink').addEventListener('click',e=>{e.preventDefault();openShop()});
 function renderAbout(){
- const rows=Array.isArray(settingsRows)?settingsRows:[];
- const wanted=/(about|পরিচিতি|বিবরণ|developer|founder|যোগাযোগ|contact|version|স্লোগান|tagline|appname|app_name|facebook|ফেসবুক|group|গ্রুপ|email|phone|website|ওয়েবসাইট|release|প্রকাশ|copyright|কপিরাইট|share|শেয়ার)/i;
- const labelMap=[
-  [/app.?name|অ্যাপের নাম/i,'অ্যাপের নাম'],[/current.?version|বর্তমান ভার্সন|version/i,'বর্তমান ভার্সন'],
-  [/developer|team|ডেভেলপার|ডেভেলপমেন্ট/i,'ডেভেলপার / টিম'],[/email|ইমেইল/i,'ইমেইল'],
-  [/phone|mobile|মোবাইল|ফোন/i,'যোগাযোগ নম্বর'],[/facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক/i,'ফেসবুক গ্রুপ'],
-  [/tagline|স্লোগান/i,'স্লোগান'],[/release.?date|প্রকাশের তারিখ/i,'রিলিজের তারিখ'],
-  [/copyright|কপিরাইট/i,'কপিরাইট'],[/about|পরিচিতি|বিবরণ/i,'আমাদের সম্পর্কে']
- ];
- const pairs=[];
- for(const r of rows){
-  const k=String(val(r,['key','name','setting','setting_key','setting_name','title','label','field'])).trim();
-  const v=String(val(r,['value','setting_value','data','description','text','content','settingValue'])).trim();
-  if(k&&v&&wanted.test(k)){
-   const label=(labelMap.find(([re])=>re.test(k))||[])[1]||k.replace(/[_-]/g,' ');
-   if(!pairs.some(p=>p[0]===label))pairs.push([label,v,k]);
-  }
- }
- const linkFor=(re)=>adminLinks.find(x=>re.test(String(val(x,['key','name','type','label','title','platform','device','description']))))||null;
- const groupRow=linkFor(/facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক/i);
- const groupUrl=String(val(groupRow||{},['url','link','value','target_url','facebook_url','group_url']));
+ const rows=[...(Array.isArray(settingsRows)?settingsRows:[]),...(Array.isArray(adminLinks)?adminLinks:[])];
+ const valueOf=(r,keys)=>{for(const k of keys){if(r&&r[k]!=null&&String(r[k]).trim()!=='')return r[k]}return ''};
+ const keyOf=r=>String(valueOf(r,['key','name','setting','setting_key','setting_name','title','label','field','type'])).trim();
+ const valOf=r=>String(valueOf(r,['value','setting_value','data','description','text','content','settingValue','url','link','target_url','download_url'])).trim();
+ const findRow=re=>rows.find(r=>re.test(keyOf(r))&&valOf(r));
+ const findValue=re=>{const r=findRow(re);return r?valOf(r):''};
+ const labelFor=k=>{
+  const maps=[
+   [/app.?name|অ্যাপের নাম/i,'অ্যাপের নাম'],[/device.?mode|ডিভাইস মোড/i,'ডিভাইস মোড'],[/update.*url|download.*url|অ্যাপ আপডেট|ডাউনলোড.*url|আপডেট.*url/i,'অ্যাপ আপডেট / ডাউনলোড URL'],
+   [/current.?version|বর্তমান ভার্সন|app.?version|ভার্সন/i,'বর্তমান ভার্সন'],[/release.?date|রিলিজের তারিখ|প্রকাশের তারিখ/i,'রিলিজের তারিখ'],
+   [/developer|team|ডেভেলপার|টিম/i,'ডেভেলপার / টিম'],[/email|ইমেইল/i,'ইমেইল'],[/phone|mobile|contact.?number|যোগাযোগ নম্বর|মোবাইল|ফোন/i,'যোগাযোগ নম্বর'],
+   [/facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক/i,'ফেসবুক গ্রুপ URL'],[/copyright.*year|copyright|কপিরাইট/i,'কপিরাইট'],
+   [/what.?s.?new|release.?note|update.?list|নতুন.*কি|আপডেট তালিকা|নতুন ভার্সন/i,'নতুন ভার্সন — কী এসেছে?'],[/tagline|স্লোগান/i,'স্লোগান'],[/about|পরিচিতি|বিবরণ/i,'আমাদের সম্পর্কে']
+  ];return (maps.find(([re])=>re.test(k))||[])[1]||k.replace(/[_-]/g,' ');
+ };
+ const wanted=/(app.?name|অ্যাপের নাম|device.?mode|ডিভাইস মোড|current.?version|বর্তমান ভার্সন|app.?version|ভার্সন|release.?date|রিলিজের তারিখ|প্রকাশের তারিখ|developer|team|ডেভেলপার|টিম|email|ইমেইল|phone|mobile|contact.?number|যোগাযোগ নম্বর|মোবাইল|ফোন|facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক|copyright|কপিরাইট|what.?s.?new|release.?note|update.?list|নতুন.*কি|আপডেট তালিকা|নতুন ভার্সন|tagline|স্লোগান|about|পরিচিতি|বিবরণ)/i;
+ const seen=new Set(),items=[];
+ for(const r of rows){const k=keyOf(r),v=valOf(r);if(!k||!v||/update.*url|download.*url|অ্যাপ আপডেট|ডাউনলোড.*url|আপডেট.*url|apk.*url/i.test(k)||!wanted.test(k))continue;const label=labelFor(k);if(seen.has(label))continue;seen.add(label);items.push({label,value:v,key:k});}
+ const rowUrl=r=>String(valueOf(r,['url','link','target_url','facebook_url','group_url','setting_value','value','download_url','data'])).trim();
+ const groupKey=/facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক/i;
+ let groupUrl='';
+ for(const r of rows){const k=keyOf(r),u=rowUrl(r);if(groupKey.test(k)&&/^https?:\/\//i.test(u)){groupUrl=u;break;}}
+ if(!groupUrl){for(const r of rows){const k=keyOf(r),u=rowUrl(r);if(/facebook|ফেসবুক/i.test(k)&&/^https?:\/\//i.test(u)){groupUrl=u;break;}}}
+ if(!groupUrl){for(const r of rows){const u=rowUrl(r);if(/^https?:\/\/(www\.)?facebook\.com\//i.test(u)){groupUrl=u;break;}}}
+ const apkUrl=findValue(/apk.*(download|url|link)|download.*(url|link)|update.*url|অ্যাপ আপডেট|ডাউনলোড.*url|আপডেট.*url/i);
+ const appName=findValue(/app.?name|অ্যাপের নাম/i)||'Bagerhat Vision';
  const content=$('aboutContent');
- if(!pairs.length&&!groupUrl){content.innerHTML='';toast('অ্যাডমিন মেনুর Settings/Links-এ About তথ্য যোগ করা নেই');return}
- const html=pairs.map(([label,v,key])=>{
-  const isUrl=/url|facebook|group|website|ওয়েবসাইট|গ্রুপ/i.test(key);
-  return `<p><strong>${escapeHtml(label)}</strong><br>${isUrl&&/^https?:\/\//i.test(v)?`<a href="${escapeHtml(v)}" target="_blank" rel="noopener">${escapeHtml(v)}</a>`:escapeHtml(v)}</p>`;
- }).join('');
- content.innerHTML=html+(groupUrl&&!pairs.some(p=>/facebook group/i.test(p[0]))?`<p><strong>ফেসবুক গ্রুপ</strong><br><a href="${escapeHtml(groupUrl)}" target="_blank" rel="noopener">ফেসবুক গ্রুপে যোগ দিন</a></p>`:'')+`<div class="aboutActions"><button type="button" id="aboutShareBtn" class="retryBtn">↗ শেয়ার করুন</button></div>`;
- $('aboutShareBtn').addEventListener('click',async()=>{const shareData={title:String(val(settingsRows.find(r=>/app.?name/i.test(String(val(r,['key','name','setting','setting_key','setting_name']))))||{},['value','setting_value','data'])||'Bagerhat Vision'),text:pairs.map(p=>p[0]+': '+p[1]).join('\n'),url:location.href};try{if(navigator.share)await navigator.share(shareData);else if(navigator.clipboard){await navigator.clipboard.writeText(location.href);toast('শেয়ার লিংক কপি হয়েছে')}else toast('এই ব্রাউজারে শেয়ার সুবিধা নেই')}catch(e){if(e&&e.name!=='AbortError')toast('শেয়ার করা যায়নি')}});
+ const html=items.map(it=>{const isUrl=/url|facebook|website|ওয়েবসাইট|গ্রুপ/i.test(it.key)||/^https?:\/\//i.test(it.value);const v=escapeHtml(it.value);return '<div class="aboutSettingGroup"><strong>'+escapeHtml(it.label)+'</strong><div class="aboutSettingValue">'+(isUrl&&/^https?:\/\//i.test(it.value)?'<a href="'+v+'" target="_blank" rel="noopener">'+v+'</a>':v)+'</div></div>';}).join('');
+ content.innerHTML=html+'<div class="aboutActions"><button type="button" id="aboutApkBtn" class="aboutActionBtn">⬇ APK ডাউনলোড</button><button type="button" id="aboutGroupBtn" class="aboutActionBtn">👥 ফেসবুক গ্রুপ</button><button type="button" id="aboutShareBtn" class="aboutActionBtn">↗ শেয়ার</button></div>';
+ $('aboutApkBtn')?.addEventListener('click',()=>{if(/^https?:\/\//i.test(apkUrl)){try{window.open(apkUrl,'_blank','noopener')}catch(e){location.href=apkUrl}}else toast('অ্যাডমিন সেটিংসে APK ডাউনলোড URL দেওয়া নেই')});
+ $('aboutGroupBtn')?.addEventListener('click',()=>{if(/^https?:\/\//i.test(groupUrl)){const a=document.createElement('a');a.href=groupUrl;a.target='_blank';a.rel='noopener noreferrer';a.click()}else toast('অ্যাডমিন সেটিংসে ফেসবুক গ্রুপ URL দেওয়া নেই')});
+ $('aboutShareBtn')?.addEventListener('click',async()=>{const shareText='📺 '+appName+' — লাইভ টিভি দেখুন!\nবন্ধুদের সাথে শেয়ার করুন ❤️\n\n📥 অ্যাপ ডাউনলোড করুন: '+(apkUrl||'[আপনার অ্যাপের ডাউনলোড লিংক]');try{if(navigator.share)await navigator.share({title:appName,text:shareText});else if(navigator.clipboard){await navigator.clipboard.writeText(shareText);toast('শেয়ারের লেখা ও APK লিংক কপি হয়েছে')}else toast('এই ব্রাউজারে শেয়ার সুবিধা নেই')}catch(e){if(e&&e.name!=='AbortError')toast('শেয়ার করা যায়নি')}});
  $('aboutShade').classList.remove('hidden');
 }
 $('aboutLink').addEventListener('click',renderAbout);$('aboutClose').addEventListener('click',()=>$('aboutShade').classList.add('hidden'));$('aboutShade').addEventListener('click',e=>{if(e.target===$('aboutShade'))$('aboutShade').classList.add('hidden')});document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('aboutShade').classList.add('hidden');resetControlTimer()}});
