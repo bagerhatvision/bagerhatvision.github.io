@@ -106,17 +106,17 @@
       margin-left: auto;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .modePill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 12px;
+      padding: 5px 12px;
       border-radius: 20px;
-      background: #05213b;
-      border: 1px solid #16568e;
+      background: #042017;
+      border: 1px solid #059669;
       color: #34d399;
       font-size: 11px;
       font-weight: 700;
@@ -126,19 +126,20 @@
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #34d399;
-      box-shadow: 0 0 8px #34d399;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
     }
 
     .clockWidget {
       text-align: right;
-      padding-left: 12px;
+      padding-left: 10px;
+      padding-right: 4px;
       border-left: 1px solid rgba(21, 57, 91, 0.6);
       font-family: 'Outfit', sans-serif;
     }
 
     .clockTime {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 700;
       color: #fff;
       line-height: 1.1;
@@ -169,6 +170,44 @@
       background: #0b2e54;
       border-color: var(--cyan);
       color: #fff;
+    }
+
+    .btnKeyboard {
+      background: #061f38;
+      border-color: #1a5c96;
+      color: #5eead4;
+    }
+
+    .btnKeyboard:hover {
+      background: #0a365f;
+      border-color: var(--cyan);
+      box-shadow: 0 0 10px rgba(66, 215, 245, 0.35);
+    }
+
+    .btnInfoCircle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #06192e;
+      border: 1.5px solid #1a568a;
+      color: var(--cyan);
+      font-size: 19px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      flex-shrink: 0;
+    }
+
+    .btnInfoCircle:hover {
+      background: #0b345c;
+      border-color: var(--cyan);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(66, 215, 245, 0.45);
+      transform: scale(1.05);
     }
 
     .btnExit {
@@ -365,32 +404,41 @@
       color: #fff;
     }
 
-    /* Center Section: Player & Info */
+    /* Center Section: Full Player & Channel Info */
     .center {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       min-height: 0;
+      min-width: 0;
+      flex: 1;
+      height: 100%;
       overflow: hidden;
     }
 
     .player {
       flex: 1 1 auto;
-      min-height: 180px;
-      max-height: 58vh;
-      aspect-ratio: 16/9;
+      min-height: 220px;
+      width: 100%;
+      height: 100%;
+      max-height: none;
       background: #000;
-      border: 1.5px solid var(--line);
+      border: 1px solid #174b78;
       border-radius: 12px;
       position: relative;
       overflow: hidden;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .player video {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: contain !important; /* CRITICAL: Never squish or distort video (চেপ্টা হবে না) */
       background: #000;
       display: block;
     }
@@ -851,36 +899,30 @@
 
     .ch.active .playSmall { color: var(--cyan); }
 
-    /* Bottom Bar */
+    /* Bottom Full-Width Notice Marquee Bar matching Screenshot 1 */
     .bottomBar {
-      height: 28px;
+      height: 34px;
       flex-shrink: 0;
       background: #020914;
       border-top: 1px solid var(--line);
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 12px;
       padding: 0 16px;
-      font-size: 11px;
-      color: #6b8eafe0;
+      font-size: 12px;
+      color: #dcebff;
+      overflow: hidden;
     }
 
-    .shortcuts {
+    .bottomNoticeTag {
+      color: var(--cyan);
+      font-weight: 900;
+      white-space: nowrap;
+      flex-shrink: 0;
       display: flex;
       align-items: center;
-      gap: 12px;
-    }
-
-    .keyBadge {
-      display: inline-block;
-      padding: 1px 5px;
-      background: #09233e;
-      border: 1px solid #194670;
-      border-radius: 4px;
-      color: #8beaff;
-      font-family: 'Outfit', sans-serif;
-      font-size: 10px;
-      font-weight: 700;
+      gap: 6px;
+      font-size: 12px;
     }
 
     /* Modal / Popups */
@@ -975,68 +1017,327 @@
       font-size: 16px;
     }
 
-    .aboutCard {
-      max-width: 540px;
-      max-height: 85vh;
-      overflow-y: auto;
+    /* Keyboard Shortcuts Modal */
+    .kbdCard {
+      max-width: 520px;
+      padding: 22px 24px;
+      background: #06172b;
+      border: 1.5px solid #1c5285;
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
     }
 
-    .aboutSettingGroup {
-      background: #041324;
-      border: 1px solid #163c62;
-      border-radius: 8px;
-      padding: 9px 12px;
-      margin: 8px 0;
-    }
-
-    .aboutSettingGroup strong {
-      display: block;
-      color: #7de7ff;
-      font-size: 12px;
-      margin-bottom: 3px;
-    }
-
-    .aboutSettingValue {
-      font-size: 13px;
-      line-height: 1.6;
-      word-break: break-word;
-      color: #d8e8f8;
-    }
-
-    .aboutSettingValue a {
-      color: #7de7ff;
-      text-decoration: none;
-    }
-
-    .aboutSettingValue a:hover {
-      text-decoration: underline;
-    }
-
-    .aboutActions {
+    .kbdHead {
       display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 18px;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #14395e;
     }
 
-    .aboutActionBtn {
-      flex: 1 1 140px;
-      min-height: 40px;
-      padding: 8px 12px;
-      border: 1px solid #235785;
-      border-radius: 10px;
-      background: #0b2a48;
-      color: #eaf7ff;
-      font-weight: 700;
+    .kbdGrid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 52vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .kbdItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: #041222;
+      border: 1px solid #133659;
+      border-radius: 9px;
+      padding: 7px 12px;
+    }
+
+    .kbdKeys {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kbdItem kbd {
+      display: inline-block;
+      padding: 3px 8px;
+      background: #0b2644;
+      border: 1px solid #205c93;
+      border-radius: 6px;
+      color: #7de7ff;
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 0 2px 0 #07192d;
+    }
+
+    .kbdDesc {
       font-size: 12px;
+      color: #d2e4f7;
+      text-align: right;
+    }
+
+    .kbdTip {
+      margin-top: 14px;
+      background: #04192f;
+      border: 1px dashed #1b5b94;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      color: #92d0ff;
+      line-height: 1.45;
+    }
+
+    .btnGotIt {
+      padding: 8px 24px;
+      background: linear-gradient(90deg, #087cf5, var(--cyan));
+      border: 0;
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      border-radius: 9px;
       cursor: pointer;
       transition: all 0.2s;
     }
 
-    .aboutActionBtn:hover {
-      background: #0a4776;
+    .btnGotIt:hover {
+      box-shadow: 0 0 14px rgba(66, 215, 245, 0.45);
+      transform: translateY(-1px);
+    }
+
+    /* About Us Modal - EXACT Match with WhatsApp Screenshot */
+    .aboutCard {
+      max-width: 640px;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 22px 24px;
+      background: #06162a;
+      border: 1.5px solid #1b4974;
+      border-radius: 18px;
+    }
+
+    .aboutCardHead {
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #13395d;
+    }
+
+    .aboutGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .aboutCardBox {
+      background: #041120;
+      border: 1px solid #133658;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .aboutCardLabel {
+      font-size: 11px;
+      font-weight: 700;
+      color: #7de7ff;
+      letter-spacing: 0.2px;
+    }
+
+    .aboutCardVal {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+      word-break: break-word;
+      line-height: 1.35;
+    }
+
+    .aboutCardVal a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .aboutCardVal a:hover {
+      color: var(--cyan);
+      text-decoration: underline;
+    }
+
+    .aboutSupportBox {
+      grid-column: 1 / 2;
+      background: #051426;
+      border: 1px solid #164069;
+    }
+
+    .aboutSupportHead {
+      font-size: 12px;
+      font-weight: 800;
+      color: #7de7ff;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+
+    .aboutSupportText {
+      font-size: 11px;
+      color: #9bb6d4;
+      line-height: 1.45;
+      margin-bottom: 8px;
+    }
+
+    .aboutPayLabel {
+      font-size: 10px;
+      color: #7098c2;
+      font-weight: 600;
+    }
+
+    .aboutPayNumber {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      margin-top: 1px;
+      margin-bottom: 6px;
+    }
+
+    .btnCopyNumber {
+      width: 100%;
+      background: #08213b;
+      border: 1px solid #1a4f7e;
+      color: #e2f2ff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btnCopyNumber:hover {
+      background: #0e345c;
       border-color: var(--cyan);
+      color: #fff;
+    }
+
+    .aboutWhatsNewBox {
+      grid-column: 2 / 3;
+      background: #051426;
+      border: 1px solid #164069;
+    }
+
+    .aboutWhatsNewHead {
+      font-size: 12px;
+      font-weight: 800;
+      color: #7de7ff;
+      margin-bottom: 6px;
+    }
+
+    .aboutWhatsNewText {
+      font-size: 11px;
+      color: #cfe2f6;
+      line-height: 1.55;
+      white-space: pre-line;
+      max-height: 175px;
+      overflow-y: auto;
+    }
+
+    .aboutWhatsNewText a {
+      color: #7de7ff;
+      text-decoration: underline;
+    }
+
+    .aboutCopyrightBox {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 8px 12px;
+      background: #030d1a;
+      border: 1px solid #102a45;
+    }
+
+    .aboutCopyrightBox .aboutCardLabel {
+      margin-bottom: 1px;
+    }
+
+    .aboutCopyrightVal {
+      font-size: 12px;
+      color: #9bb7d6;
+      font-weight: 500;
+    }
+
+    .aboutActionPills {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .aboutPillBtn {
+      flex: 1;
+      min-height: 38px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      text-align: center;
+      padding: 6px 10px;
+    }
+
+    .pillApk {
+      background: linear-gradient(90deg, #00b4db 0%, #0083b0 100%);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(0, 180, 219, 0.35);
+    }
+
+    .pillApk:hover {
+      box-shadow: 0 6px 20px rgba(0, 180, 219, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .pillWa {
+      background: linear-gradient(90deg, #2563eb 0%, #1d4ed8 100%);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    .pillWa:hover {
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
+      transform: translateY(-1px);
+    }
+
+    .pillShare {
+      background: #08213b;
+      border-color: #1b4f7f;
+      color: #d7ecff;
+    }
+
+    .pillShare:hover {
+      background: #0d365f;
+      border-color: var(--cyan);
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .aboutGrid {
+        grid-template-columns: 1fr;
+      }
+      .aboutSupportBox, .aboutWhatsNewBox {
+        grid-column: 1 / -1;
+      }
+      .aboutActionPills {
+        flex-direction: column;
+      }
     }
 
     .toast {
@@ -1369,26 +1670,31 @@
     </div>
 
     <div class="topActions">
-      <!-- PC Mode Indicator -->
+      <!-- PC Mode Indicator (TV Mode removed as requested: "tv mode leka bad jabe...eta to pc mod, tai") -->
       <div class="modePill">
         <div class="dot"></div>
-        <span>💻 PC Mode</span>
+        <span>💻 PC মোড</span>
       </div>
 
       <!-- Live Clock & Date -->
       <div class="clockWidget">
-        <div class="clockTime" id="clockTime">08:45 PM</div>
-        <div class="clockDate" id="clockDate">Thu, 05 Nov 2026</div>
+        <div class="clockTime" id="clockTime">08:41 AM</div>
+        <div class="clockDate" id="clockDate">Fri, Nov 06, 2026</div>
       </div>
 
-      <!-- About Us Modal Button -->
-      <button class="btnTop" id="btnAbout" title="আমাদের সম্পর্কে">
-        <span>ⓘ তথ্য</span>
+      <!-- Keyboard Shortcuts Guide Button (Replaces Remote as requested: "remote er okane keyboard er controll nirdesona asbe") -->
+      <button type="button" class="btnTop btnKeyboard" id="btnKeyboard" title="কিবোর্ড শর্টকাট কন্ট্রোল">
+        <span>⌨️ কিবোর্ড</span>
       </button>
 
-      <!-- Exit Button -->
-      <button class="btnTop btnExit" id="btnExit" title="অ্যাপ থেকে প্রস্থান করুন">
-        <span>🚪 প্রস্থান</span>
+      <!-- Circular About Us Info Button matching Screenshot 2 -->
+      <button type="button" class="btnInfoCircle" id="btnAbout" title="আমাদের সম্পর্কে (About Us)">
+        <span>ⓘ</span>
+      </button>
+
+      <!-- Bengali Exit Button -->
+      <button type="button" class="btnTop btnExit" id="btnExit" title="ওয়েবসাইট থেকে বের হোন">
+        <span>🚪 বের হোন</span>
       </button>
     </div>
   </header>
@@ -1475,27 +1781,6 @@
         </div>
       </div>
 
-      <!-- Notice Ticker -->
-      <div class="noticeBar" id="noticeBar">
-        <span class="noticeTag">📣 নোটিশ:</span>
-        <div class="ticker">
-          <span id="noticeText">বাগেরহাট ভিশন আপডেটের কাজ চলছে। যেকোনো সহায়তায় আমাদের সাথে থাকুন।</span>
-        </div>
-      </div>
-
-      <!-- Recently Watched Channels Carousel -->
-      <div class="recent">
-        <div class="recentHead">
-          <span>◷ সম্প্রতি দেখা চ্যানেল</span>
-          <div class="recentNav">
-            <button class="recentArrow" id="recentPrev" title="বামে স্ক্রোল করুন">‹</button>
-            <button class="recentArrow" id="recentNext" title="ডানে স্ক্রোল করুন">›</button>
-          </div>
-        </div>
-        <div class="recentSlider" id="recentSlider">
-          <div style="padding:4px;color:#708ea8;font-size:11px;">এখনো কোনো চ্যানেল চালানো হয়নি</div>
-        </div>
-      </div>
     </section>
 
     <!-- Right Column: Channel List & Search -->
@@ -1510,22 +1795,14 @@
     </aside>
   </main>
 
-  <!-- Bottom PC Shortcuts Guide Bar -->
+  <!-- Full-Width Bottom Notice Marquee Bar matching Screenshot 1 -->
   <footer class="bottomBar">
-    <div class="shortcuts">
-      <span><span class="keyBadge">Space</span> প্লে/পজ</span>
-      <span>•</span>
-      <span><span class="keyBadge">◀ ▶</span> আগের/পরের চ্যানেল</span>
-      <span>•</span>
-      <span><span class="keyBadge">▲ ▼</span> ভলিউম</span>
-      <span>•</span>
-      <span><span class="keyBadge">F</span> ফুলস্ক্রিন</span>
-      <span>•</span>
-      <span><span class="keyBadge">0-9</span> চ্যানেল ডায়াল</span>
-      <span>•</span>
-      <span><span class="keyBadge">Esc</span> প্রস্থান</span>
+    <div class="bottomNoticeTag">
+      <span>📢 নোটিশ:</span>
     </div>
-    <div>Bagerhat Vision © 2026 | PC Mode</div>
+    <div class="ticker">
+      <span id="noticeText">আমাদের বাগেরহাট ভিশন এ্যাপস এর নতুন আপডেট রিলিজ করা হয়েছে, এ্যাপস এর এবাউট সেকশনের Apk Download থেকে নতুন ভার্সন…</span>
+    </div>
   </footer>
 </div>
 
@@ -1536,14 +1813,75 @@
       <img src="/assets/aistudio/logo_e1a2a355.jpeg" alt="Bagerhat Vision" onerror="this.src='https://i.imgur.com/B4CoZVe.png'">
     </div>
     <h3 style="font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 6px;">
-      অ্যাপ থেকে প্রস্থান করবেন?
+      ওয়েবসাইট থেকে বের হবেন?
     </h3>
     <p style="font-size: 13px; color: #9bb6d4; line-height: 1.5;">
-      আপনি কি সত্যিই <span style="color: #ffe05b; font-weight: 700;">Bagerhat Vision</span> অ্যাপটি বন্ধ করে বের হতে চান?
+      আপনি কি সত্যিই <span style="color: #ffe05b; font-weight: 700;">Bagerhat Vision</span> ওয়েবসাইটটি ছেড়ে যেতে চান?
     </p>
     <div class="exitBtns">
       <button class="btnCancelExit" id="btnCancelExit">না, ফিরে যান</button>
-      <button class="btnConfirmExit" id="btnConfirmExit">হ্যাঁ, প্রস্থান</button>
+      <button class="btnConfirmExit" id="btnConfirmExit">হ্যাঁ, বের হোন</button>
+    </div>
+  </div>
+</div>
+
+<!-- Keyboard Shortcuts Guide Modal -->
+<div class="modalShade hidden" id="keyboardModal" role="dialog" aria-modal="true" aria-labelledby="kbdTitle">
+  <div class="modalCard kbdCard">
+    <button type="button" class="aboutClose" id="kbdClose" aria-label="বন্ধ করুন">✕</button>
+    <div class="kbdHead">
+      <span style="font-size: 24px;">⌨️</span>
+      <div>
+        <h2 id="kbdTitle" style="font-size: 17px; font-weight: 800; color: #fff;">কিবোর্ড কন্ট্রোল নির্দেশিকা</h2>
+        <p style="font-size: 11px; color: #8bb4db;">পিসি কিবোর্ড দিয়ে খুব সহজে সম্পূর্ণ অ্যাপটি নিয়ন্ত্রণ করুন</p>
+      </div>
+    </div>
+
+    <div class="kbdGrid">
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>Space</kbd></div>
+        <div class="kbdDesc">ভিডিও প্লে / বিরতি (Play / Pause)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>◀</kbd> <kbd>▶</kbd></div>
+        <div class="kbdDesc">আগের / পরের চ্যানেল (Previous / Next)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>▲</kbd> <kbd>▼</kbd></div>
+        <div class="kbdDesc">ভলিউম বাড়ানো / কমানো (Volume Up / Down)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>M</kbd></div>
+        <div class="kbdDesc">সাউন্ড মিউট / আনমিউট (Mute Toggle)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>F</kbd></div>
+        <div class="kbdDesc">ফুলস্ক্রিন অন / অফ (Fullscreen)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>0</kbd> – <kbd>9</kbd></div>
+        <div class="kbdDesc">সিলেক্টেড ক্যাটাগরির চ্যানেল ডায়াল (Dial in Category)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>/</kbd></div>
+        <div class="kbdDesc">চ্যানেল অনুসন্ধান সার্চ বক্সে ফোকাস (Search)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>I</kbd></div>
+        <div class="kbdDesc">আমাদের সম্পর্কে ও অ্যাপের তথ্য (About Info)</div>
+      </div>
+      <div class="kbdItem">
+        <div class="kbdKeys"><kbd>Esc</kbd></div>
+        <div class="kbdDesc">প্রস্থান বা পপআপ বন্ধ (Exit / Close)</div>
+      </div>
+    </div>
+
+    <div class="kbdTip">
+      💡 <strong>টিপস:</strong> আপনি যে ক্যাটাগরি (যেমন: কিডস, নিউজ বা স্পোর্টস) সিলেক্ট রাখবেন, কিবোর্ডে সংখ্যা (১, ২, ৩...) চাপলে সেই ক্যাটাগরির চ্যানেল সরাসরি চালু হবে।
+    </div>
+
+    <div style="margin-top: 14px; text-align: center;">
+      <button type="button" class="btnGotIt" id="btnGotIt">ঠিক আছে, বুঝেছি</button>
     </div>
   </div>
 </div>
@@ -1890,20 +2228,22 @@
     });
   }
 
-  // Render Recently Watched
+  // Render Recently Watched (if container present)
   function renderRecent() {
+    const slider = $('recentSlider');
+    if (!slider) return;
     if (!recent.length) {
-      $('recentSlider').innerHTML = '<div style="padding:4px;color:#708ea8;font-size:11px;">এখনো কোনো চ্যানেল চালানো হয়নি</div>';
+      slider.innerHTML = '<div style="padding:4px;color:#708ea8;font-size:11px;">এখনো কোনো চ্যানেল চালানো হয়নি</div>';
       return;
     }
-    $('recentSlider').innerHTML = recent.map(c => `
+    slider.innerHTML = recent.map(c => `
       <div class="recentCard" data-id="${escapeHtml(channelKey(c))}" title="${escapeHtml(name(c))}">
         <img src="${escapeHtml(logo(c))}" alt="" onerror="this.src='https://i.imgur.com/B4CoZVe.png'">
         <span>${escapeHtml(name(c))}</span>
       </div>
     `).join('');
 
-    $('recentSlider').querySelectorAll('.recentCard').forEach(b => {
+    slider.querySelectorAll('.recentCard').forEach(b => {
       b.addEventListener('click', () => {
         const c = recent.find(x => channelKey(x) === b.dataset.id);
         if (c) {
@@ -1914,8 +2254,8 @@
     });
   }
 
-  $('recentPrev').addEventListener('click', () => $('recentSlider').scrollBy({ left: -200, behavior: 'smooth' }));
-  $('recentNext').addEventListener('click', () => $('recentSlider').scrollBy({ left: 200, behavior: 'smooth' }));
+  $('recentPrev')?.addEventListener('click', () => $('recentSlider')?.scrollBy({ left: -200, behavior: 'smooth' }));
+  $('recentNext')?.addEventListener('click', () => $('recentSlider')?.scrollBy({ left: 200, behavior: 'smooth' }));
 
   // Controls Auto-Hide
   function resetControlTimer() {
@@ -2155,6 +2495,21 @@
 
   $('search').addEventListener('input', renderChannels);
 
+  // Keyboard Modal Handlers
+  function openKeyboardModal() {
+    $('keyboardModal')?.classList.remove('hidden');
+  }
+  function closeKeyboardModal() {
+    $('keyboardModal')?.classList.add('hidden');
+  }
+
+  $('btnKeyboard')?.addEventListener('click', openKeyboardModal);
+  $('kbdClose')?.addEventListener('click', closeKeyboardModal);
+  $('btnGotIt')?.addEventListener('click', closeKeyboardModal);
+  $('keyboardModal')?.addEventListener('click', e => {
+    if (e.target === $('keyboardModal')) closeKeyboardModal();
+  });
+
   // Keyboard Shortcuts for PC
   window.addEventListener('keydown', e => {
     if (document.activeElement === $('search')) {
@@ -2164,7 +2519,7 @@
 
     if (e.key === ' ' || e.code === 'Space') {
       e.preventDefault();
-      $('playBtn').click();
+      $('playBtn')?.click();
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
       stepChannel(-1);
@@ -2181,30 +2536,52 @@
       $('volume').dispatchEvent(new Event('input'));
     } else if (e.key === 'f' || e.key === 'F') {
       e.preventDefault();
-      $('fullBtn').click();
+      $('fullBtn')?.click();
     } else if (e.key === 'm' || e.key === 'M') {
       e.preventDefault();
-      $('muteBtn').click();
+      $('muteBtn')?.click();
+    } else if (e.key === 'k' || e.key === 'K') {
+      e.preventDefault();
+      if ($('keyboardModal')?.classList.contains('hidden')) openKeyboardModal();
+      else closeKeyboardModal();
+    } else if (e.key === 'i' || e.key === 'I') {
+      e.preventDefault();
+      if ($('aboutShade')?.classList.contains('hidden')) renderAbout();
+      else $('aboutShade')?.classList.add('hidden');
+    } else if (e.key === '/') {
+      e.preventDefault();
+      $('search')?.focus();
     } else if (e.key === 'Escape') {
       e.preventDefault();
-      if (!$('aboutShade').classList.contains('hidden')) {
-        $('aboutShade').classList.add('hidden');
-      } else if (!$('exitModal').classList.contains('hidden')) {
-        $('exitModal').classList.add('hidden');
+      if (!$('keyboardModal')?.classList.contains('hidden')) {
+        closeKeyboardModal();
+      } else if (!$('aboutShade')?.classList.contains('hidden')) {
+        $('aboutShade')?.classList.add('hidden');
+      } else if (!$('exitModal')?.classList.contains('hidden')) {
+        $('exitModal')?.classList.add('hidden');
       } else {
-        $('exitModal').classList.remove('hidden');
+        $('exitModal')?.classList.remove('hidden');
       }
     } else if (/^[0-9]$/.test(e.key)) {
+      // REQUIREMENT: "je categori select takbe keyboard er number sei categori te kaj korbe"
       numberBuffer += e.key;
       clearTimeout(numberTimeout);
-      toast(`চ্যানেল নং: ${numberBuffer}`);
+      const catTitle = activeCategory === '__all__' ? 'সব চ্যানেল' : (activeCategory === '__fav__' ? 'পছন্দের চ্যানেল' : activeCategory);
+      toast(`[${catTitle}] চ্যানেল নং: ${numberBuffer}`);
       numberTimeout = setTimeout(() => {
         const num = parseInt(numberBuffer, 10);
-        const match = channels.find(c => c.serial === num) || channels[num - 1];
-        if (match) playChannel(match);
-        else toast(`চ্যানেল ${num} পাওয়া যায়নি`);
+        const scoped = channelsInCurrentScope();
+        // Look up by position (1-based) in current category, or matching serial
+        const match = scoped[num - 1] || scoped.find(c => c.serial === num);
+        if (match) {
+          match._userSelected = true;
+          playChannel(match);
+          toast(`[${catTitle}] ${num}. ${name(match)} চালু হয়েছে`);
+        } else {
+          toast(`[${catTitle}] ক্যাটাগরিতে ${num} নম্বর চ্যানেল নেই`);
+        }
         numberBuffer = '';
-      }, 1000);
+      }, 900);
     }
   });
 
@@ -2212,14 +2589,14 @@
   function openShop() {
     const l = adminLinks.find(x => /shop/i.test(String(val(x, ['key', 'name', 'type', 'label', 'title'])))) ||
               adminLinks.find(x => val(x, ['shop_url', 'shop', 'shopLink']));
-    const href = val(l, ['url', 'link', 'value', 'target_url', 'shop_url', 'shop']);
+    const href = val(l, ['url', 'link', 'value', 'target_url', 'shop_url', 'shop']) || 'https://eservicebd24.github.io/';
     if (href) window.open(href, '_blank', 'noopener');
     else toast('অনলাইন শপের লিংক অ্যাডমিন প্যানেল থেকে সেট করা নেই');
   }
 
-  $('sideShopBtn').addEventListener('click', openShop);
+  $('sideShopBtn')?.addEventListener('click', openShop);
 
-  // Dynamic About Rendering from Settings and Links Sheets (Exact from Original Engine)
+  // Dynamic About Rendering from Settings and Links Sheets (EXACT Match with WhatsApp Screenshot 1)
   function renderAbout() {
     const rows = [...(Array.isArray(settingsRows) ? settingsRows : []), ...(Array.isArray(adminLinks) ? adminLinks : [])];
     const valueOf = (r, keys) => {
@@ -2230,139 +2607,159 @@
     };
     const keyOf = r => String(valueOf(r, ['key', 'name', 'setting', 'setting_key', 'setting_name', 'title', 'label', 'field', 'type'])).trim();
     const valOf = r => String(valueOf(r, ['value', 'setting_value', 'data', 'description', 'text', 'content', 'settingValue', 'url', 'link', 'target_url', 'download_url'])).trim();
-    const findRow = re => rows.find(r => re.test(keyOf(r)) && valOf(r));
     const findValue = re => {
-      const r = findRow(re);
+      const r = rows.find(x => re.test(keyOf(x)) && valOf(x));
       return r ? valOf(r) : '';
     };
 
-    const labelFor = k => {
-      const maps = [
-        [/app.?name|অ্যাপের নাম/i, 'অ্যাপের নাম'],
-        [/device.?mode|ডিভাইস মোড/i, 'ডিভাইস মোড'],
-        [/update.*url|download.*url|অ্যাপ আপডেট|ডাউনলোড.*url|আপডেট.*url/i, 'অ্যাপ আপডেট / ডাউনলোড URL'],
-        [/current.?version|বর্তমান ভার্সন|app.?version|ভার্সন/i, 'বর্তমান ভার্সন'],
-        [/release.?date|রিলিজের তারিখ|প্রকাশের তারিখ/i, 'রিলিজের তারিখ'],
-        [/developer|team|ডেভেলপার|টিম/i, 'ডেভেলপার / টিম'],
-        [/email|ইমেইল/i, 'ইমেইল'],
-        [/phone|mobile|contact.?number|যোগাযোগ নম্বর|মোবাইল|ফোন/i, 'যোগাযোগ নম্বর'],
-        [/facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক/i, 'ফেসবুক গ্রুপ URL'],
-        [/copyright.*year|copyright|কপিরাইট/i, 'কপিরাইট'],
-        [/what.?s.?new|release.?note|update.?list|নতুন.*কি|আপডেট তালিকা|নতুন ভার্সন/i, 'নতুন ভার্সন — কী এসেছে?'],
-        [/tagline|স্লোগান/i, 'স্লোগান'],
-        [/about|পরিচিতি|বিবরণ/i, 'আমাদের সম্পর্কে']
-      ];
-      return (maps.find(([re]) => re.test(k)) || [])[1] || k.replace(/[_-]/g, ' ');
-    };
-
-    const wanted = /(app.?name|অ্যাপের নাম|device.?mode|ডিভাইস মোড|current.?version|বর্তমান ভার্সন|app.?version|ভার্সন|release.?date|রিলিজের তারিখ|প্রকাশের তারিখ|developer|team|ডেভেলপার|টিম|email|ইমেইল|phone|mobile|contact.?number|যোগাযোগ নম্বর|মোবাইল|ফোন|facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক|copyright|কপিরাইট|what.?s.?new|release.?note|update.?list|নতুন.*কি|আপডেট তালিকা|নতুন ভার্সন|tagline|স্লোগান|about|পরিচিতি|বিবরণ)/i;
-    const seen = new Set(), items = [];
-    for (const r of rows) {
-      const k = keyOf(r), v = valOf(r);
-      if (!k || !v || /update.*url|download.*url|অ্যাপ আপডেট|ডাউনলোড.*url|আপডেট.*url|apk.*url/i.test(k) || !wanted.test(k)) continue;
-      const label = labelFor(k);
-      if (seen.has(label)) continue;
-      seen.add(label);
-      items.push({ label, value: v, key: k });
-    }
-
-    const rowUrl = r => String(valueOf(r, ['url', 'link', 'target_url', 'facebook_url', 'group_url', 'setting_value', 'value', 'download_url', 'data'])).trim();
-    const groupKey = /facebook.*group|group.*facebook|ফেসবুক.*গ্রুপ|গ্রুপ.*ফেসবুক/i;
-    let groupUrl = '';
-    for (const r of rows) {
-      const k = keyOf(r), u = rowUrl(r);
-      if (groupKey.test(k) && /^https?:\/\//i.test(u)) { groupUrl = u; break; }
-    }
-    if (!groupUrl) {
-      for (const r of rows) {
-        const k = keyOf(r), u = rowUrl(r);
-        if (/facebook|ফেসবুক/i.test(k) && /^https?:\/\//i.test(u)) { groupUrl = u; break; }
-      }
-    }
-    if (!groupUrl) {
-      for (const r of rows) {
-        const u = rowUrl(r);
-        if (/^https?:\/\/(www\.)?facebook\.com\//i.test(u)) { groupUrl = u; break; }
-      }
-    }
-
-    const apkUrl = findValue(/apk.*(download|url|link)|download.*(url|link)|update.*url|অ্যাপ আপডেট|ডাউনলোড.*url|আপডেট.*url/i) || '/bagerhat_vision_android_studio_project.zip';
     const appName = findValue(/app.?name|অ্যাপের নাম/i) || 'Bagerhat Vision';
+    const appVersion = findValue(/app.?version|বর্তমান ভার্সন|ভার্সন|version/i) || 'v1.1.5';
+    const releaseDate = findValue(/release.?date|রিলিজের তারিখ|প্রকাশের তারিখ/i) || '26-10-2026';
+    const developer = findValue(/developer|team|ডেভেলপার|টিম/i) || 'SC Android Studio';
+    const contactEmail = findValue(/email|ইমেইল/i) || 'jakareachakladar@gmail.com';
+    const contactPhone = findValue(/phone|mobile|contact.?number|যোগাযোগ নম্বর|মোবাইল|ফোন/i) || '+8801303-072964';
+    const copyrightText = findValue(/copyright|কপিরাইট/i) || '© SC Android Studio — All Rights Reserved.';
+    const whatsNewRaw = findValue(/what.?s.?new|release.?note|update.?list|নতুন.*কি|আপডেট তালিকা|নতুন ভার্সন/i) ||
+      `১. ফুলস্ক্রিন ভিডিও প্লেয়ারের উন্নতি ও স্ক্রিনজুড়ে ভিডিও প্রদর্শনের ব্যবস্থা।\n২. ফুলস্ক্রিন মোডে ভিডিওর আকার ও প্রদর্শন ঠিক করার উন্নতি।\n৩. ক্যাটাগরির পাশে চ্যানেলের সংখ্যা প্রদর্শনের সুবিধা।\n৪. ক্যাটাগরির চ্যানেল সংখ্যা স্বয়ংক্রিয়ভাবে গণনা।\n৫. ওয়েবসাইট লিংক:\nhttps://bagerhatvision.github.io`;
+
+    const apkUrl = findValue(/apk.*(download|url|link)|download.*(url|link)|update.*url|অ্যাপ আপডেট|ডাউনলোড.*url|আপডেট.*url/i) || 'https://scandroidstudio.github.io/#app/424682022';
+    
+    // WhatsApp channel URL from sheet or screenshot
+    const waUrl = findValue(/whatsapp|facebook.*url|group.*url/i) || 'https://whatsapp.com/channel/0029Vb9CZ1v0G0XiX18Go31R';
+
+    // Format What's New with clickable links
+    const whatsNewFormatted = escapeHtml(whatsNewRaw).replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+
     const content = $('aboutContent');
-
-    const html = items.map(it => {
-      const isUrl = /url|facebook|website|ওয়েবসাইট|গ্রুপ/i.test(it.key) || /^https?:\/\//i.test(it.value);
-      const v = escapeHtml(it.value);
-      return `
-        <div class="aboutSettingGroup">
-          <strong>${escapeHtml(it.label)}</strong>
-          <div class="aboutSettingValue">
-            ${isUrl && /^https?:\/\//i.test(it.value) ? `<a href="${v}" target="_blank" rel="noopener">${v}</a>` : v}
-          </div>
+    content.innerHTML = `
+      <div class="aboutGrid">
+        <!-- 1. App Name -->
+        <div class="aboutCardBox">
+          <span class="aboutCardLabel">অ্যাপের নাম</span>
+          <strong class="aboutCardVal">${escapeHtml(appName)}</strong>
         </div>
-      `;
-    }).join('');
 
-    content.innerHTML = html + `
-      <div class="aboutActions">
-        <button type="button" id="aboutApkBtn" class="aboutActionBtn">⬇ APK ডাউনলোড</button>
-        <button type="button" id="aboutGroupBtn" class="aboutActionBtn">👥 ফেসবুক গ্রুপ</button>
-        <button type="button" id="aboutShareBtn" class="aboutActionBtn">↗ শেয়ার</button>
+        <!-- 2. Current Version -->
+        <div class="aboutCardBox">
+          <span class="aboutCardLabel">বর্তমান ভার্সন</span>
+          <strong class="aboutCardVal">${escapeHtml(appVersion)}</strong>
+        </div>
+
+        <!-- 3. Release Date -->
+        <div class="aboutCardBox">
+          <span class="aboutCardLabel">রিলিজের তারিখ</span>
+          <strong class="aboutCardVal">${escapeHtml(releaseDate)}</strong>
+        </div>
+
+        <!-- 4. Developer / Team -->
+        <div class="aboutCardBox">
+          <span class="aboutCardLabel">ডেভেলপার / টিম</span>
+          <strong class="aboutCardVal">${escapeHtml(developer)}</strong>
+        </div>
+
+        <!-- 5. Email -->
+        <div class="aboutCardBox">
+          <span class="aboutCardLabel">ইমেইল</span>
+          <strong class="aboutCardVal"><a href="mailto:${escapeHtml(contactEmail)}">${escapeHtml(contactEmail)}</a></strong>
+        </div>
+
+        <!-- 6. Contact Number -->
+        <div class="aboutCardBox">
+          <span class="aboutCardLabel">যোগাযোগ নম্বর</span>
+          <strong class="aboutCardVal"><a href="tel:${escapeHtml(contactPhone)}">${escapeHtml(contactPhone)}</a></strong>
+        </div>
+
+        <!-- 7. Support / Donation Card (Left Box) -->
+        <div class="aboutCardBox aboutSupportBox">
+          <div class="aboutSupportHead">♥ অ্যাপ উন্নয়নে সহায়তা করুন</div>
+          <p class="aboutSupportText">অ্যাপের নিয়মিত আপডেট ও রক্ষণাবেক্ষণে সহায়তা করতে বিকাশ বা নগদে সাপোর্ট করতে পারেন।</p>
+          <div class="aboutPayLabel">বিকাশ / নগদ (পার্সোনাল)</div>
+          <div class="aboutPayNumber">01303-072964</div>
+          <button type="button" class="btnCopyNumber" id="btnCopyDonation">নম্বর কপি করুন</button>
+        </div>
+
+        <!-- 8. What's New Card (Right Box) -->
+        <div class="aboutCardBox aboutWhatsNewBox">
+          <div class="aboutWhatsNewHead">নতুন ভার্সন — কী এসেছে?</div>
+          <div class="aboutWhatsNewText">${whatsNewFormatted}</div>
+        </div>
+
+        <!-- 9. Copyright Card (Full Width) -->
+        <div class="aboutCardBox aboutCopyrightBox">
+          <span class="aboutCardLabel">কপিরাইট</span>
+          <div class="aboutCopyrightVal">${escapeHtml(copyrightText)}</div>
+        </div>
+
+        <!-- 10. Action Buttons Pills matching WhatsApp Screenshot -->
+        <div class="aboutActionPills">
+          <a href="${escapeHtml(apkUrl)}" target="_blank" rel="noopener" class="aboutPillBtn pillApk">
+            <span>↓ APK ডাউনলোড</span>
+          </a>
+          <a href="${escapeHtml(waUrl)}" target="_blank" rel="noopener" class="aboutPillBtn pillWa">
+            <span>📢 হোয়াটসঅ্যাপ চ্যানেল</span>
+          </a>
+          <button type="button" id="btnAboutShare" class="aboutPillBtn pillShare">
+            <span>↗ শেয়ার</span>
+          </button>
+        </div>
       </div>
     `;
 
-    $('aboutApkBtn')?.addEventListener('click', () => {
-      if (apkUrl) {
-        try { window.open(apkUrl, '_blank', 'noopener'); } catch (e) { location.href = apkUrl; }
-      } else toast('অ্যাডমিন সেটিংসে APK ডাউনলোড URL দেওয়া নেই');
-    });
-
-    $('aboutGroupBtn')?.addEventListener('click', () => {
-      if (/^https?:\/\//i.test(groupUrl)) {
-        const a = document.createElement('a');
-        a.href = groupUrl;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.click();
-      } else toast('অ্যাডমিন সেটিংসে ফেসবুক গ্রুপ URL দেওয়া নেই');
-    });
-
-    $('aboutShareBtn')?.addEventListener('click', async () => {
-      const shareText = `📺 ${appName} — লাইভ টিভি দেখুন!\nবন্ধুদের সাথে শেয়ার করুন ❤️\n\n📥 অ্যাপ ডাউনলোড করুন: ${apkUrl || '[আপনার অ্যাপের ডাউনলোড লিংক]'}`;
+    // Copy Donation Number
+    $('btnCopyDonation')?.addEventListener('click', async () => {
+      const num = '01303072964';
       try {
-        if (navigator.share) await navigator.share({ title: appName, text: shareText });
-        else if (navigator.clipboard) {
-          await navigator.clipboard.writeText(shareText);
-          toast('শেয়ারের লেখা ও লিংক কপি হয়েছে');
-        } else toast('এই ব্রাউজারে শেয়ার সুবিধা নেই');
-      } catch (e) {
-        if (e && e.name !== 'AbortError') toast('শেয়ার করা যায়নি');
+        if (navigator.clipboard) {
+          await navigator.clipboard.writeText(num);
+          toast('বিকাশ/নগদ নম্বর কপি হয়েছে: 01303-072964');
+        } else {
+          prompt('বিকাশ/নগদ নম্বর:', num);
+        }
+      } catch {
+        prompt('বিকাশ/নগদ নম্বর:', num);
       }
     });
 
-    $('aboutShade').classList.remove('hidden');
+    // Share Button
+    $('btnAboutShare')?.addEventListener('click', async () => {
+      const shareText = `📺 ${appName} (${appVersion}) — লাইভ টিভি দেখুন!\n\n📥 অ্যাপ ডাউনলোড লিঙ্ক: ${apkUrl}\n📢 হোয়াটসঅ্যাপ চ্যানেল: ${waUrl}`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: appName, text: shareText });
+        } else if (navigator.clipboard) {
+          await navigator.clipboard.writeText(shareText);
+          toast('শেয়ার লিংক কপি হয়েছে');
+        } else {
+          toast('শেয়ার সুবিধা নেই');
+        }
+      } catch (err) {
+        if (err && err.name !== 'AbortError') toast('শেয়ার করা যায়নি');
+      }
+    });
+
+    $('aboutShade')?.classList.remove('hidden');
   }
 
-  $('btnAbout').addEventListener('click', renderAbout);
-  $('sideAboutBtn').addEventListener('click', renderAbout);
-  $('aboutClose').addEventListener('click', () => $('aboutShade').classList.add('hidden'));
-  $('aboutShade').addEventListener('click', e => {
-    if (e.target === $('aboutShade')) $('aboutShade').classList.add('hidden');
+  $('btnAbout')?.addEventListener('click', renderAbout);
+  $('sideAboutBtn')?.addEventListener('click', renderAbout);
+  $('aboutClose')?.addEventListener('click', () => $('aboutShade')?.classList.add('hidden'));
+  $('aboutShade')?.addEventListener('click', e => {
+    if (e.target === $('aboutShade')) $('aboutShade')?.classList.add('hidden');
   });
 
   // Bengali Exit Dialog Handling
-  $('btnExit').addEventListener('click', () => $('exitModal').classList.remove('hidden'));
-  $('btnCancelExit').addEventListener('click', () => $('exitModal').classList.add('hidden'));
-  $('btnConfirmExit').addEventListener('click', () => {
+  $('btnExit')?.addEventListener('click', () => $('exitModal')?.classList.remove('hidden'));
+  $('btnCancelExit')?.addEventListener('click', () => $('exitModal')?.classList.add('hidden'));
+  $('btnConfirmExit')?.addEventListener('click', () => {
     try {
-      $('video').pause();
+      $('video')?.pause();
       window.close();
     } catch {}
-    $('exitModal').classList.add('hidden');
-    toast('অ্যাপ বন্ধ করা হয়েছে');
+    $('exitModal')?.classList.add('hidden');
+    toast('ওয়েবসাইট থেকে বের হওয়ার অনুরোধ করা হয়েছে');
   });
-  $('exitModal').addEventListener('click', e => {
-    if (e.target === $('exitModal')) $('exitModal').classList.add('hidden');
+  $('exitModal')?.addEventListener('click', e => {
+    if (e.target === $('exitModal')) $('exitModal')?.classList.add('hidden');
   });
 
   // Fetch Live Data from Google Sheets
@@ -2385,16 +2782,44 @@
     }
   }
 
+  // REQUIREMENT: "defult channel admin panel er set onujaye"
+  function getAdminDefaultChannel() {
+    if (!channels || !channels.length) return null;
+    const startRow = (settingsRows || []).find(r => /start.*channel/i.test(r.key || r.id || ''));
+    if (startRow && startRow.value) {
+      try {
+        const parsed = typeof startRow.value === 'string' ? JSON.parse(startRow.value) : startRow.value;
+        const targetId = parsed.channelId || parsed.id;
+        const targetName = (parsed.channelName || parsed.name || '').toLowerCase();
+        const targetSerial = parsed.serial;
+        const found = channels.find(c =>
+          (targetId && (c.id === targetId || c.channel_id === targetId)) ||
+          (targetName && name(c).toLowerCase() === targetName) ||
+          (targetSerial && c.serial === targetSerial)
+        );
+        if (found) return found;
+      } catch {
+        const str = String(startRow.value).trim().toLowerCase();
+        const found = channels.find(c => name(c).toLowerCase().includes(str));
+        if (found) return found;
+      }
+    }
+    // Default to DBC News (admin's selected channel) or first channel
+    return channels.find(c => name(c).toLowerCase().includes('dbc')) || channels[0] || null;
+  }
+
   async function start() {
     renderCategories();
     renderChannels();
     renderRecent();
 
-    if (channels.length > 0) {
-      playChannel(channels[0]);
+    // Instant Boot: Play DBC News (default channel set in admin panel)
+    const initDefault = getAdminDefaultChannel();
+    if (initDefault) {
+      playChannel(initDefault);
     }
 
-    // Load Live Sheets
+    // Load Live Sheets from Google Apps Script
     const results = await Promise.allSettled([
       fetchSheet('Channels'),
       fetchSheet('Categories'),
@@ -2421,6 +2846,11 @@
     }
     if (results[3].status === 'fulfilled' && Array.isArray(results[3].value)) {
       settingsRows = results[3].value;
+      // Re-evaluate default channel once admin settings arrive
+      const adminChannel = getAdminDefaultChannel();
+      if (adminChannel && (!current || !current._userSelected)) {
+        playChannel(adminChannel);
+      }
     }
     if (results[4].status === 'fulfilled' && Array.isArray(results[4].value)) {
       adminLinks = results[4].value;
