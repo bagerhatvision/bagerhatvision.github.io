@@ -1,5 +1,5 @@
 (function(){
-const KEY='techExpressDemo_v1';
+const KEY='techExpressDemo_v2';
 const seed={
  categories:['Smart Watch','Ladies Watch','Earbuds','Watch Strap','Accessories'],
  products:[
@@ -18,8 +18,8 @@ function save(){localStorage.setItem(KEY,JSON.stringify(db))}
 function get(){return db}
 function reset(){db=JSON.parse(JSON.stringify(seed));save()}
 function product(id){return db.products.find(p=>p.id===id)}
-function cart(){try{return JSON.parse(localStorage.getItem('te_cart'))||[]}catch(e){return []}}
-function saveCart(c){localStorage.setItem('te_cart',JSON.stringify(c))}
+function cart(){try{return JSON.parse(localStorage.getItem('te_cart_v2'))||[]}catch(e){return []}}
+function saveCart(c){localStorage.setItem('te_cart_v2',JSON.stringify(c))}
 function addCart(id,qty=1){let c=cart(),it=c.find(x=>x.id===id);if(it)it.qty+=qty;else c.push({id,qty});saveCart(c)}
 function updateCart(id,qty){let c=cart().map(x=>x.id===id?{...x,qty}:x).filter(x=>x.qty>0);saveCart(c)}
 function cartItems(){return cart().map(x=>({...x,product:product(x.id)})).filter(x=>x.product)}

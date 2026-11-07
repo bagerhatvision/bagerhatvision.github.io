@@ -34,3 +34,10 @@ Home, products, product details, cart, COD checkout, order tracking, about, cont
 - Reduced mobile intro and product-card whitespace.
 - Hid the horizontal category scrollbar while keeping swipe scrolling.
 - Added arrow-key focus navigation for Android TV remotes and keyboards.
+
+## Reference UI update (v4)
+- Rebuilt responsive header with red cart mark, search and cart actions.
+- Added persistent four-item mobile bottom navigation.
+- Added a proper footer with brand, quick links and help links; short pages use a flex sticky-footer layout.
+- Added Android TV user-agent styling for dark navy remote-friendly presentation.
+- Bumped demo LocalStorage keys so stale demo image URLs from older versions do not override the corrected local sample images.
