@@ -28,3 +28,9 @@ Home, products, product details, cart, COD checkout, order tracking, about, cont
 - Product images are URL fields, not uploaded into Google Sheets.
 - Demo products and orders are stored in LocalStorage in this browser.
 - This site is designed mobile-first and includes keyboard/remote-friendly focus styles for Android TV browsers.
+
+## UI refinements (v2)
+- Replaced unrelated remote demo photos with local product-specific SVG illustrations.
+- Reduced mobile intro and product-card whitespace.
+- Hid the horizontal category scrollbar while keeping swipe scrolling.
+- Added arrow-key focus navigation for Android TV remotes and keyboards.

@@ -4,3 +4,36 @@
 @media(min-width:761px) and (max-width:1000px){.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.desktop-nav{gap:12px;font-size:12px}}
 /* Android TV / keyboard remote focus: visible, high-contrast focus and generous hit areas */
 @media(min-width:1000px){body{font-size:16px}.btn,.category-chip,.desktop-nav a,.admin-sidebar a{min-height:42px}.product-card:focus-within{outline:3px solid #2563eb;outline-offset:2px}}
+
+/* Mobile layout refinements */
+.welcome{padding:14px 0 4px}.welcome h1{font-size:clamp(22px,3vw,28px);margin:0}
+.welcome .eyebrow{font-size:11px;margin-bottom:2px}.welcome .muted{font-size:14px;line-height:1.55;margin:5px 0 0}
+.category-strip{scrollbar-width:none;-ms-overflow-style:none;padding:7px 0 12px}
+.category-strip::-webkit-scrollbar{display:none}
+.product-image{aspect-ratio:1.12/1;padding:7px;background:#fff}
+.product-info{padding:8px 10px 10px}.product-name{min-height:36px;line-height:1.35}
+.product-card .price{margin:3px 0 7px}
+@media(max-width:760px){
+ .welcome{padding:11px 0 2px}.welcome h1{font-size:23px}
+ .welcome .muted{font-size:13px;line-height:1.45;margin-top:4px}
+ .category-strip{padding:5px 0 9px;gap:7px}.category-chip{padding:8px 12px;font-size:12px}
+ .section-head{margin:12px 0 9px}.section-head h2{font-size:19px}
+ .product-grid{gap:9px;margin-bottom:18px}.product-image{aspect-ratio:1.05/1;padding:5px}
+ .product-info{padding:7px 8px 9px}.product-name{font-size:12px;min-height:32px}
+ .product-card .price{font-size:16px;margin:3px 0 6px}
+ .product-card .btn-small{padding:8px 4px;font-size:11px;min-height:38px}
+}
+@media(max-width:390px){.brand{font-size:15px}.brand-icon{font-size:22px}.header-inner{gap:12px}}
+@media(min-width:1000px){.btn,.category-chip,.desktop-nav a,.admin-sidebar a{min-height:42px}.product-card:focus-within{outline:3px solid #2563eb;outline-offset:2px}}
+
+/* Sticky footer: keep footer at the viewport bottom on short pages */
+body:not(.admin-body):not(.admin-login){
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;
+  flex-direction:column;
+}
+body:not(.admin-body):not(.admin-login) #site-header{flex:0 0 auto}
+body:not(.admin-body):not(.admin-login) main{flex:1 0 auto}
+body:not(.admin-body):not(.admin-login) #site-footer{flex:0 0 auto;margin-top:auto}
+body:not(.admin-body):not(.admin-login) .site-footer{margin-top:0}

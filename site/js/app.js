@@ -12,4 +12,19 @@ function cartPage(){let items=TEStore.cartItems();if(!items.length){$('#cart-con
 function checkout(){let items=TEStore.cartItems();if(!items.length){$('#checkout-content').innerHTML='<div class="panel empty">কার্ট খালি। <a href="products.html">পণ্য দেখুন</a></div>';return}$('#checkout-content').innerHTML=`<form id="order-form" class="panel form-grid"><label>আপনার নাম *<input name="name" required></label><label>মোবাইল নম্বর *<input name="phone" type="tel" required pattern="[0-9+ -]{10,15}"></label><label class="span-2">সম্পূর্ণ ঠিকানা *<textarea name="address" required rows="3" placeholder="গ্রাম, ইউনিয়ন, উপজেলা, জেলা"></textarea></label><label class="span-2">অতিরিক্ত তথ্য (ঐচ্ছিক)<textarea name="note" rows="2"></textarea></label><div class="span-2 summary-line"><span>পণ্যের মূল্য</span><b>${money(TEStore.subtotal())}</b></div><div class="span-2 summary-line"><span>ডেলিভারি চার্জ</span><b>${money(db.settings.delivery)}</b></div><div class="span-2 summary-line total-line"><span>সর্বমোট (COD)</span><b>${money(TEStore.subtotal()+Number(db.settings.delivery))}</b></div><button class="btn span-2">অর্ডার নিশ্চিত করুন</button></form>`;$('#order-form').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),o=TEStore.placeOrder({name:f.get('name'),phone:f.get('phone'),address:f.get('address'),note:f.get('note')});$('#checkout-content').innerHTML=`<div class="panel success-box"><h2>অর্ডার গ্রহণ করা হয়েছে ✓</h2><p>আপনার অর্ডার আইডি: <b>${o.id}</b></p><p>মোট: <b>${money(o.total)}</b></p><a class="btn" href="tracking.html?id=${o.id}">অর্ডার ট্র্যাক করুন</a></div>`}}
 function tracking(){let form=$('#tracking-form'),res=$('#tracking-result');function find(id){let o=TEStore.get().orders.find(x=>x.id.toLowerCase()===id.toLowerCase());res.innerHTML=o?`<div class="panel tracking-card"><h2>অর্ডার ${o.id}</h2><p>${o.customer.name} · ${o.customer.phone}</p><p>মোট: <b>${money(o.total)}</b></p><span class="status">${o.status}</span><p class="muted small">${new Date(o.date).toLocaleString('bn-BD')}</p></div>`:'<div class="panel empty">এই আইডিতে কোনো অর্ডার পাওয়া যায়নি।</div>'}form.onsubmit=e=>{e.preventDefault();find(new FormData(form).get('orderId'))};let id=new URLSearchParams(location.search).get('id');if(id){form.elements.orderId.value=id;find(id)}}
 header();footer();({home,products,product:detail,cart:cartPage,checkout,tracking})[page]?.();
+// Arrow-key navigation for Android TV remotes and keyboard users.
+document.addEventListener('keydown',e=>{
+ if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)) return;
+ const active=document.activeElement;
+ if(active && ['INPUT','TEXTAREA','SELECT'].includes(active.tagName)) return;
+ const nodes=[...document.querySelectorAll('a[href],button:not(:disabled),input:not(:disabled),select:not(:disabled),textarea:not(:disabled)')].filter(n=>n.getClientRects().length && getComputedStyle(n).visibility!=='hidden');
+ if(!nodes.length)return;const idx=nodes.indexOf(active);
+ if(idx<0){nodes[0].focus();e.preventDefault();return}
+ const r=active.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+ const dirs={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]},[dx,dy]=dirs[e.key];
+ let best=null,score=Infinity;
+ nodes.forEach(n=>{if(n===active)return;const q=n.getBoundingClientRect(),x=q.left+q.width/2-cx,y=q.top+q.height/2-cy,forward=x*dx+y*dy;if(forward<=4)return;const v=forward+Math.abs(x*dy-y*dx)*2.4;if(v<score){score=v;best=n}});
+ if(best){best.focus();e.preventDefault()}
+});
+
 })();
