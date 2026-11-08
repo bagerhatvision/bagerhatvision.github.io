@@ -18,3 +18,15 @@ Admin login and management pages use the Apps Script API (Products, Categories, 
 - Admin login is the mobile/Login ID and password set in Apps Script Script Properties.
 - If you edit Apps Script after deployment, use Deploy > Manage deployments > Edit > New version > Deploy.
 - Browser/API connectivity is dependent on Google Apps Script web-app CORS/redirect behavior; test storefront loading, checkout and admin login after publishing.
+
+
+## v11 — SPA Navigation Update
+- Shop pages now use client-side navigation: internal links load only the destination `<main>` content.
+- Shared header, footer, and bottom navigation stay mounted instead of being rebuilt on every page.
+- Browser Back/Forward is handled with History API.
+- Main page fragments are cached (bounded cache) and scroll positions are restored.
+- Apps Script bootstrap runs once per browser page session; navigation does not re-fetch the Sheets bootstrap.
+- Admin pages remain on their separate admin flow to avoid changing the existing login/session behavior.
+- Existing Apps Script endpoint, Google Sheets schema, order creation, tracking, and cart storage are preserved.
+
+Deployment: replace the contents of the GitHub Pages `site/` folder with this package. Do not upload the enclosing project folder itself.

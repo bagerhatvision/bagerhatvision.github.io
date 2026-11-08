@@ -1,6 +1,8 @@
 (function(){
 const $=s=>document.querySelector(s), money=n=>`${window.TECH_CONFIG.CURRENCY}${Number(n||0).toLocaleString('en-IN')}`;
-let db=TEStore.get(); const page=document.body.dataset.page;
+let db=TEStore.get(); let page=document.body.dataset.page;
+let apiReady=false, navigationBusy=false;
+const pageCache=new Map(), scrollPositions=new Map();
 if(/Android.*(TV|AFT|BRAVIA|GoogleTV)|GoogleTV|SmartTV/i.test(navigator.userAgent))document.body.classList.add('tv-mode');
 function header(){
  const count=TEStore.cart().reduce((s,x)=>s+x.qty,0);
@@ -26,7 +28,7 @@ function card(p){return `<article class="product-card"><a href="product.html?id=
 function bindAdd(){document.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>{TEStore.addCart(b.dataset.add);b.textContent='যোগ হয়েছে ✓';document.querySelectorAll('.cart-count,.bottom-count').forEach(x=>x.textContent=TEStore.cart().reduce((s,i)=>s+i.qty,0))})}
 function home(){ $('#home-categories').innerHTML=db.categories.map(c=>`<a class="category-chip" href="products.html?category=${encodeURIComponent(c)}">${c}</a>`).join('');$('#featured-products').innerHTML=db.products.filter(p=>p.active&&p.featured).map(card).join('');$('#new-products').innerHTML=db.products.filter(p=>p.active).slice().reverse().slice(0,4).map(card).join('');bindAdd()}
 function products(){let list=db.products.filter(p=>p.active);const params=new URLSearchParams(location.search);const cat=params.get('category');$('#category-filter').innerHTML+=[...new Set(db.categories)].map(c=>`<option>${c}</option>`).join('');if(cat)$('#category-filter').value=cat;if(params.get('focus')==='search')setTimeout(()=>$('#product-search').focus(),100);if(params.get('search'))$('#product-search').value=params.get('search');function draw(){let q=$('#product-search').value.toLowerCase(),c=$('#category-filter').value,s=$('#sort-filter').value,a=list.filter(p=>(!q||p.name.toLowerCase().includes(q))&&(!c||p.category===c));if(s==='low')a.sort((x,y)=>x.price-y.price);if(s==='high')a.sort((x,y)=>y.price-x.price);$('#all-products').innerHTML=a.length?a.map(card).join(''):'<p class="empty">কোনো পণ্য পাওয়া যায়নি।</p>';bindAdd()}['input','change'].forEach(ev=>[$('#product-search'),$('#category-filter'),$('#sort-filter')].forEach(x=>x.addEventListener(ev,draw)));draw()}
-function detail(){let id=new URLSearchParams(location.search).get('id'),p=TEStore.product(id);if(!p){$('#product-detail').innerHTML='<p class="empty">পণ্য পাওয়া যায়নি। <a href="products.html">সব পণ্য দেখুন</a></p>';return}$('#product-detail').innerHTML=`<div class="detail-layout"><div class="detail-image"><img src="${p.image}" alt="${p.name}" onerror="this.src='assets/watch-placeholder.svg'"></div><div class="detail-info"><p class="eyebrow">${p.category}</p><h1>${p.name}</h1><div class="price detail-price">${money(p.price)} ${p.oldPrice?`<del>${money(p.oldPrice)}</del>`:''}</div><p>${p.description||''}</p><p class="stock">${p.stock>0?'স্টকে আছে':'স্টক শেষ'}</p><div class="detail-actions"><button class="btn" id="detail-add" ${p.stock<1?'disabled':''}>কার্টে যোগ করুন</button><a class="btn btn-outline" href="checkout.html">অর্ডার করুন</a></div><p class="muted small">পেমেন্ট: Cash on Delivery</p></div></div>`;$('#detail-add').onclick=()=>{TEStore.addCart(p.id);location.href='cart.html'};document.querySelector('.detail-actions .btn-outline').onclick=(e)=>{e.preventDefault();TEStore.addCart(p.id);location.href='checkout.html'}}
+function detail(){let id=new URLSearchParams(location.search).get('id'),p=TEStore.product(id);if(!p){$('#product-detail').innerHTML='<p class="empty">পণ্য পাওয়া যায়নি। <a href="products.html">সব পণ্য দেখুন</a></p>';return}$('#product-detail').innerHTML=`<div class="detail-layout"><div class="detail-image"><img src="${p.image}" alt="${p.name}" onerror="this.src='assets/watch-placeholder.svg'"></div><div class="detail-info"><p class="eyebrow">${p.category}</p><h1>${p.name}</h1><div class="price detail-price">${money(p.price)} ${p.oldPrice?`<del>${money(p.oldPrice)}</del>`:''}</div><p>${p.description||''}</p><p class="stock">${p.stock>0?'স্টকে আছে':'স্টক শেষ'}</p><div class="detail-actions"><button class="btn" id="detail-add" ${p.stock<1?'disabled':''}>কার্টে যোগ করুন</button><a class="btn btn-outline" href="checkout.html">অর্ডার করুন</a></div><p class="muted small">পেমেন্ট: Cash on Delivery</p></div></div>`;$('#detail-add').onclick=()=>{TEStore.addCart(p.id);navigate('cart.html')};document.querySelector('.detail-actions .btn-outline').onclick=(e)=>{e.preventDefault();TEStore.addCart(p.id);navigate('checkout.html')}}
 function cartPage(){let items=TEStore.cartItems();if(!items.length){$('#cart-content').innerHTML='<div class="panel empty">আপনার কার্ট খালি। <a href="products.html">পণ্য দেখুন</a></div>';return}$('#cart-content').innerHTML=`<div class="cart-layout"><div class="cart-list">${items.map(x=>`<div class="cart-row"><img src="${x.product.image}" onerror="this.src='assets/watch-placeholder.svg'"><div class="cart-product"><b>${x.product.name}</b><span class="price">${money(x.product.price)}</span></div><div class="qty"><button data-minus="${x.id}">−</button><span>${x.qty}</span><button data-plus="${x.id}">＋</button></div><button class="remove" data-remove="${x.id}">✕</button></div>`).join('')}</div><aside class="panel summary"><h3>অর্ডার সারাংশ</h3><p>সাবটোটাল <b>${money(TEStore.subtotal())}</b></p><p>ডেলিভারি <b>${money(db.settings.delivery)}</b></p><hr><h3>সর্বমোট <strong>${money(TEStore.subtotal()+Number(db.settings.delivery))}</strong></h3><a class="btn full" href="checkout.html">চেকআউট করুন</a></aside></div>`;document.querySelectorAll('[data-minus]').forEach(b=>b.onclick=()=>{let x=TEStore.cart().find(i=>i.id===b.dataset.minus);TEStore.updateCart(x.id,x.qty-1);cartPage()});document.querySelectorAll('[data-plus]').forEach(b=>b.onclick=()=>{let x=TEStore.cart().find(i=>i.id===b.dataset.plus);TEStore.updateCart(x.id,x.qty+1);cartPage()});document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{TEStore.updateCart(b.dataset.remove,0);cartPage()})}
 function checkout(){
  let items=TEStore.cartItems();
@@ -97,7 +99,97 @@ function tracking(){
  form.onsubmit=e=>{e.preventDefault();const f=new FormData(form);find(f.get('orderId'),f.get('phoneLast4'))};
  let id=new URLSearchParams(location.search).get('id');if(id)form.elements.orderId.value=id;
 }
-async function start(){try{await TEStore.init();db=TEStore.get();header();footer();({home,products,product:detail,cart:cartPage,checkout,tracking,invoice})[page]?.();}catch(err){header();footer();const target=document.querySelector('main');if(target)target.insertAdjacentHTML('afterbegin',`<div class="container panel order-error-notice"><b>সার্ভার সংযোগ পাওয়া যায়নি</b><p>${escapeHTML(err.message)} পেজ রিফ্রেশ করে আবার চেষ্টা করুন।</p></div>`);console.error(err)}}
+function loadingCard(){return `<div class="product-card skeleton-card"><div class="skeleton skeleton-image"></div><div class="product-info"><div class="skeleton skeleton-line wide"></div><div class="skeleton skeleton-line short"></div><div class="skeleton skeleton-button"></div></div></div>`}
+function showLoadingState(){
+ const gridIds=page==='home'?['featured-products','new-products']:page==='products'?['all-products']:[];
+ gridIds.forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=Array.from({length:page==='home'?4:8},loadingCard).join('')});
+ if(page==='home'){const c=document.getElementById('home-categories');if(c)c.innerHTML=Array.from({length:4},()=>'<span class="skeleton skeleton-chip"></span>').join('')}
+ const target=document.getElementById(({cart:'cart-content',checkout:'checkout-content',tracking:'tracking-result',product:'product-detail'}[page])||'');
+ if(target)target.innerHTML='<div class="panel loading-panel"><span class="loading-spinner"></span><span>তথ্য লোড হচ্ছে...</span></div>';
+}
+async function renderCurrentPage(){
+ page=document.body.dataset.page||'home';
+ db=TEStore.get();
+ showLoadingState();
+ const renderer=({home,products,product:detail,cart:cartPage,checkout,tracking,invoice})[page];
+ if(renderer) renderer();
+ updateCartBadges();
+ document.title=({home:'Tech Express 2.0 | Quality gadgets you can trust.',products:'সব পণ্য | Tech Express 2.0',product:'পণ্যের বিবরণ | Tech Express 2.0',cart:'কার্ট | Tech Express 2.0',checkout:'চেকআউট | Tech Express 2.0',tracking:'অর্ডার ট্র্যাকিং | Tech Express 2.0',invoice:'ইনভয়েস | Tech Express 2.0',contact:'যোগাযোগ | Tech Express 2.0',about:'আমাদের সম্পর্কে | Tech Express 2.0'})[page]||'Tech Express 2.0';
+}
+function updateCartBadges(){
+ const count=TEStore.cart().reduce((sum,item)=>sum+item.qty,0);
+ document.querySelectorAll('.cart-count,.bottom-count').forEach(el=>el.textContent=count);
+}
+function setActiveNavigation(){
+ document.querySelectorAll('.desktop-nav a,.mobile-bottom-nav a,.mobile-nav a').forEach(a=>{
+  const target=new URL(a.href,location.href);
+  const active=target.pathname===location.pathname;
+  a.classList.toggle('active',active);
+ });
+}
+function pageKey(url){return url.pathname+url.search}
+async function navigate(href,{replace=false,pop=false}={}){
+ const url=new URL(href,location.href);
+ if(url.origin!==location.origin||!url.pathname.startsWith(location.pathname.replace(/[^/]*$/,''))||url.pathname.includes('/admin/')){location.href=url.href;return}
+ if(navigationBusy)return;
+ const currentKey=pageKey(new URL(location.href));
+ scrollPositions.set(currentKey,window.scrollY);
+ if(!pop){
+  if(replace)history.replaceState({te:true},'',url.href);
+  else history.pushState({te:true},'',url.href);
+ }
+ const key=pageKey(url);
+ navigationBusy=true;
+ try{
+  let html=pageCache.get(key);
+  if(!html){
+   const response=await fetch(url.href,{credentials:'same-origin',cache:'no-cache'});
+   if(!response.ok)throw new Error('পেজ লোড করা যায়নি');
+   const text=await response.text();
+   const doc=new DOMParser().parseFromString(text,'text/html');
+   const incoming=doc.querySelector('main');
+   if(!incoming)throw new Error('পেজের Content পাওয়া যায়নি');
+   html=incoming.innerHTML;
+   pageCache.set(key,html);
+   // Keep the cache bounded on low-memory phones.
+   if(pageCache.size>12)pageCache.delete(pageCache.keys().next().value);
+  }
+  const docPage=url.pathname.split('/').pop().replace('.html','')||'home';
+  const pageName=docPage==='index'?'home':docPage;
+  const main=document.querySelector('main');
+  if(main){main.innerHTML=html;main.dataset.page=pageName}
+  document.body.dataset.page=pageName;
+  await renderCurrentPage();
+  setActiveNavigation();
+  const saved=scrollPositions.get(key);
+  requestAnimationFrame(()=>window.scrollTo(0,saved||0));
+ }catch(error){
+  console.error(error);
+  if(!pop)history.back();
+  else location.href=url.href;
+ }finally{navigationBusy=false}
+}
+function installRouter(){
+ document.addEventListener('click',e=>{
+  if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+  const a=e.target.closest('a[href]');
+  if(!a||a.target==='_blank'||a.hasAttribute('download')||a.getAttribute('href').startsWith('#'))return;
+  const u=new URL(a.href,location.href);
+  if(u.origin!==location.origin||u.pathname.includes('/admin/'))return;
+  if(!/\.html?$/.test(u.pathname)&&u.pathname!==location.pathname)return;
+  e.preventDefault();navigate(u.href);
+ });
+ window.addEventListener('popstate',()=>navigate(location.href,{pop:true,replace:true}));
+}
+async function start(){
+ header();footer();installRouter();
+ showLoadingState();
+ // Keep the shared shell and page structure visible while Sheets responds.
+ try{await TEStore.init();apiReady=true;db=TEStore.get()}
+ catch(err){console.error('Store initialization:',err)}
+ await renderCurrentPage();
+}
+window.TEApp={navigate,refresh:async()=>{await TEStore.init();await renderCurrentPage()},clearPageCache:()=>pageCache.clear()};
 start();
 // Arrow-key navigation for Android TV remotes and keyboard users.
 document.addEventListener('keydown',e=>{

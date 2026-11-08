@@ -266,3 +266,23 @@ body.tv-mode{background:#11172f;color:#f8fafc;--bg:#11172f;--ink:#f8fafc;--muted
  .footer-topline,.footer-benefits,.footer-copyright{ -webkit-print-color-adjust:exact;print-color-adjust:exact}
  a{color:inherit!important;text-decoration:none!important}
 }
+
+/* v10: immediate shared shell + reserved loading placeholders */
+.skeleton{display:block;position:relative;overflow:hidden;background:#e9edf2;border-radius:8px}
+.skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),transparent);animation:te-sheen 1.15s infinite}
+@keyframes te-sheen{100%{transform:translateX(100%)}}
+.skeleton-card{pointer-events:none}
+.skeleton-image{aspect-ratio:1/1;width:100%;border-radius:0}
+.skeleton-line{height:13px;margin:7px 0}
+.skeleton-line.wide{width:82%}.skeleton-line.short{width:48%}
+.skeleton-button{height:34px;margin-top:12px}
+.skeleton-chip{width:100px;height:36px;flex:0 0 100px;border-radius:9px}
+.loading-panel{min-height:150px;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--muted)}
+.loading-spinner{width:22px;height:22px;border:3px solid #e1e5eb;border-top-color:var(--red);border-radius:50%;animation:te-spin .75s linear infinite}
+@keyframes te-spin{to{transform:rotate(360deg)}}
+
+/* v11 SPA navigation: persistent shared shell and subtle content transition */
+main{animation:tePageIn .16s ease-out}
+@keyframes tePageIn{from{opacity:.78}to{opacity:1}}
+.desktop-nav a.active,.mobile-bottom-nav a.active{color:var(--red)}
+@media(prefers-reduced-motion:reduce){main{animation:none}}
