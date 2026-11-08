@@ -5,7 +5,7 @@ window.TECH_CONFIG = {
   APPS_SCRIPT_URL: "",
   CURRENCY: "৳",
   DELIVERY_CHARGE: 80,
-  STORE_NAME: "Tech Express",
+  STORE_NAME: "Tech Express 2.0",
   DEMO_ADMIN_USER: "admin",
   DEMO_ADMIN_PASS: "1234"
 };

@@ -46,3 +46,16 @@ Home, products, product details, cart, COD checkout, order tracking, about, cont
 - Simplified the footer to a compact brand row, one Contact link, copyright and Admin Login.
 - Removed duplicated Home, Products and Order Tracking footer links because primary navigation is already available in the mobile bottom navigation.
 - Reduced footer vertical padding on mobile and desktop.
+
+## UI refinement (v6 — final footer reference)
+- Rebuilt the storefront footer as a short brand-and-benefits strip.
+- Removed Contact and Admin Login links from the footer.
+- Copyright now reads exactly: © Tech Express 2.0 - 2026 / All Rights Reserved.
+- Kept the mobile bottom navigation separate and unchanged.
+
+## UI refinement (v7 — official branding and contacts)
+- Updated store name to Tech Express 2.0 and tagline to “🛒Quality gadgets you can trust.🛍️”.
+- Added the supplied Imgur direct logo URL to the storefront header and footer.
+- Added official Facebook page and WhatsApp contact 01303-072964 to the compact footer.
+- Updated the Contact page phone and WhatsApp links.
+- Kept the compact footer copyright and mobile bottom navigation.
