@@ -41,3 +41,8 @@ Home, products, product details, cart, COD checkout, order tracking, about, cont
 - Added a proper footer with brand, quick links and help links; short pages use a flex sticky-footer layout.
 - Added Android TV user-agent styling for dark navy remote-friendly presentation.
 - Bumped demo LocalStorage keys so stale demo image URLs from older versions do not override the corrected local sample images.
+
+## UI refinement (v5)
+- Simplified the footer to a compact brand row, one Contact link, copyright and Admin Login.
+- Removed duplicated Home, Products and Order Tracking footer links because primary navigation is already available in the mobile bottom navigation.
+- Reduced footer vertical padding on mobile and desktop.

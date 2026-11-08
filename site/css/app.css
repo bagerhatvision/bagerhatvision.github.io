@@ -105,3 +105,22 @@ body.tv-mode{background:#11172f;color:#f8fafc;--bg:#11172f;--ink:#f8fafc;--muted
 .tv-mode .footer-brand p,.tv-mode .footer-links{color:#cbd5e1}
 @media(min-width:1100px){.tv-mode .container{width:min(1500px,calc(100% - 56px))}.tv-mode .header-inner{min-height:82px}.tv-mode .brand{font-size:28px}.tv-mode .desktop-nav{font-size:18px;gap:32px}}
 @media(max-width:760px){.tv-mode .mobile-bottom-nav{display:none}.tv-mode{padding-bottom:0}.tv-mode .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* v5: compact footer — primary navigation already lives in the mobile bottom bar */
+.site-footer.compact-footer{margin-top:24px;background:#172033;color:#fff;padding:0;font-size:12px}
+.footer-compact-main{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:9px;padding-bottom:9px}
+.footer-compact-brand{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.footer-compact-brand b{font-size:15px;color:#fff}
+.footer-compact-brand span{font-size:11px;color:#cbd5e1}
+.footer-contact{color:#fff;text-decoration:underline;text-underline-offset:3px;font-size:12px}
+.site-footer.compact-footer .footer-bottom{padding:9px 0;font-size:10px}
+.site-footer.compact-footer .footer-bottom .container{align-items:center}
+@media(max-width:760px){
+ .site-footer.compact-footer{margin-top:16px}
+ .footer-compact-main{min-height:46px;padding-top:7px;padding-bottom:7px}
+ .footer-compact-brand{gap:6px}
+ .footer-compact-brand b{font-size:13px}
+ .footer-compact-brand span{font-size:10px}
+ .footer-contact{font-size:11px}
+ .site-footer.compact-footer .footer-bottom{padding:7px 0;font-size:9px}
+}
